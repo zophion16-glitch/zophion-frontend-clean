@@ -16,42 +16,41 @@ function Enquiry() {
     });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch(
-      "https://zophion-backend.onrender.com/send-email",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+    try {
+      const response = await fetch(
+        "https://zophion-backend.onrender.com/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }
+      );
+
+      const data = await response.json();
+      console.log("Response:", data);
+
+      if (response.ok) {
+        alert("Enquiry Sent Successfully ✅");
+        setFormData({
+          name: "",
+          email: "",
+          mobile: "",
+          service: "",
+          message: ""
+        });
+      } else {
+        alert("Failed to send ❌");
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert("Enquiry Sent Successfully!");
-      setFormData({
-        name: "",
-        email: "",
-        mobile: "",
-        service: "",
-        message: "",
-      });
-    } else {
-      alert("Failed to send!");
-      console.log(data);
+    } catch (error) {
+      alert("Server not connected ❌");
+      console.error("Error:", error);
     }
-  } catch (error) {
-    alert("Error sending enquiry!");
-    console.log(error);
-  }
-};
-
+  };
 
   return (
     <div style={styles.page}>
