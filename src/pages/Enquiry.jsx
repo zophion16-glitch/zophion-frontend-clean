@@ -6,13 +6,13 @@ function Enquiry() {
     email: "",
     mobile: "",
     service: "",
-    message: ""
+    message: "",
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -31,7 +31,11 @@ function Enquiry() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      // ✅ response json optional (no unused var error)
+      let result = null;
+      try {
+        result = await response.json();
+      } catch (_) {}
 
       if (response.ok) {
         alert("Enquiry Sent Successfully ✅");
@@ -40,10 +44,10 @@ function Enquiry() {
           email: "",
           mobile: "",
           service: "",
-          message: ""
+          message: "",
         });
       } else {
-        alert("Failed to send ❌");
+        alert(result?.message || "Failed to send ❌");
       }
     } catch (error) {
       alert("Server not connected ❌");
@@ -130,7 +134,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "40px"
+    padding: "40px",
   },
   card: {
     backgroundColor: "#ffffff",
@@ -138,7 +142,7 @@ const styles = {
     borderRadius: "16px",
     width: "100%",
     maxWidth: "500px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
   },
   title: { textAlign: "center", marginBottom: "10px", fontSize: "26px" },
   subtitle: { textAlign: "center", marginBottom: "30px", color: "#555" },
@@ -147,13 +151,13 @@ const styles = {
     padding: "12px",
     borderRadius: "8px",
     border: "1px solid #ccc",
-    fontSize: "15px"
+    fontSize: "15px",
   },
   textarea: {
     padding: "12px",
     borderRadius: "8px",
     border: "1px solid #ccc",
-    fontSize: "15px"
+    fontSize: "15px",
   },
   button: {
     marginTop: "10px",
@@ -163,8 +167,8 @@ const styles = {
     borderRadius: "25px",
     fontSize: "16px",
     fontWeight: "600",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 };
 
 export default Enquiry;
