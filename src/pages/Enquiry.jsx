@@ -20,11 +20,10 @@ function Enquiry() {
     e.preventDefault();
 
     try {
-      // DEV uses localhost, production uses deployed backend URL
       const baseUrl =
         process.env.NODE_ENV === "development"
           ? "http://localhost:5000"
-          : "https://your-backend-domain.com"; // replace with your deployed backend URL
+          : process.env.REACT_APP_API_URL;
 
       const response = await fetch(`${baseUrl}/send-email`, {
         method: "POST",
@@ -33,14 +32,18 @@ function Enquiry() {
       });
 
       const data = await response.json();
-      console.log("Response status:", response.status);
-      console.log("Response data:", data);
 
       if (response.ok) {
         alert("Enquiry Sent Successfully ✅");
-        setFormData({ name: "", email: "", mobile: "", service: "", message: "" });
+        setFormData({
+          name: "",
+          email: "",
+          mobile: "",
+          service: "",
+          message: ""
+        });
       } else {
-        alert(`Failed to send ❌\n${data.message || "Unknown error"}`);
+        alert("Failed to send ❌");
       }
     } catch (error) {
       alert("Server not connected ❌");
@@ -121,14 +124,47 @@ function Enquiry() {
 }
 
 const styles = {
-  page: { minHeight: "100vh", backgroundColor: "#fff9e6", display: "flex", justifyContent: "center", alignItems: "center", padding: "40px" },
-  card: { backgroundColor: "#ffffff", padding: "40px", borderRadius: "16px", width: "100%", maxWidth: "500px", boxShadow: "0 10px 30px rgba(0,0,0,0.1)" },
+  page: {
+    minHeight: "100vh",
+    backgroundColor: "#fff9e6",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "40px"
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    padding: "40px",
+    borderRadius: "16px",
+    width: "100%",
+    maxWidth: "500px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+  },
   title: { textAlign: "center", marginBottom: "10px", fontSize: "26px" },
   subtitle: { textAlign: "center", marginBottom: "30px", color: "#555" },
   form: { display: "flex", flexDirection: "column", gap: "15px" },
-  input: { padding: "12px", borderRadius: "8px", border: "1px solid #ccc", fontSize: "15px" },
-  textarea: { padding: "12px", borderRadius: "8px", border: "1px solid #ccc", fontSize: "15px" },
-  button: { marginTop: "10px", padding: "12px", backgroundColor: "#FFD700", border: "none", borderRadius: "25px", fontSize: "16px", fontWeight: "600", cursor: "pointer" }
+  input: {
+    padding: "12px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "15px"
+  },
+  textarea: {
+    padding: "12px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "15px"
+  },
+  button: {
+    marginTop: "10px",
+    padding: "12px",
+    backgroundColor: "#FFD700",
+    border: "none",
+    borderRadius: "25px",
+    fontSize: "16px",
+    fontWeight: "600",
+    cursor: "pointer"
+  }
 };
 
 export default Enquiry;
